@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva de Salas - OABSP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Reserva de Salas - 11ª Subseção OABSP</h2>
+        <form id="reservaForm">
+            <label for="nome">Nome / OAB:</label>
+            <input type="text" id="nome" required>
+
+            <label for="sala">Sala:</label>
+            <select id="sala" required>
+                <option value="Sala Principal">Sala Principal</option>
+                <option value="Sala Secundária">Sala Secundária</option>
+                <option value="Sala Biblioteca">Sala Biblioteca</option>
+            </select>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" required>
+
+            <label for="hora">Horário:</label>
+            <select id="hora" required>
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+            </select>
+
+            <label for="motivo">Motivo:</label>
+            <select id="motivo" required>
+                <option value="Audiência">Audiência</option>
+                <option value="Atendimento">Atendimento</option>
+                <option value="Uso do computador">Uso do computador</option>
+                <option value="Outros">Outros</option>
+            </select>
+
+            <button type="submit">Reservar</button>
+        </form>
+        <div id="mensagem" class="message"></div>
+    </div>
+
+    <script>
+        const reservas = [];
+
+        document.getElementById('reservaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const sala = document.getElementById('sala').value;
+            const data = document.getElementById('data').value;
+            const hora = document.getElementById('hora').value;
+            const motivo = document.getElementById('motivo').value;
+            const mensagem = document.getElementById('mensagem');
+
+            const diaSemana = new Date(data).getDay();
+            if (diaSemana === 0 || diaSemana === 6) {
+                mensagem.textContent = "Local Fechado, não é possível fazer reserva!";
+                mensagem.className = "message error";
+                return;
+            }
+
+            const reservaExistente = reservas.find(r => r.data === data && r.hora === hora && r.sala === sala);
+            if (reservaExistente) {
+                mensagem.textContent = "Horário Reservado!";
+                mensagem.className = "message error";
+                return;
+            }
+
+            reservas.push({ nome, sala, data, hora, motivo });
+            mensagem.textContent = "Reserva realizada com sucesso!";
+            mensagem.className = "message success";
+            document.getElementById('reservaForm').reset();
+        });
+    </script>
+</body>
+</html>
