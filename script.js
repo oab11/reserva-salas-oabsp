@@ -28,12 +28,13 @@ document.getElementById('reservaForm').addEventListener('submit', function(e) {
     const nome = form.nome.value;
     const oab = form.oab.value;
     const sala = form.sala.value;
-    const datahora = form.datahora.value;
+    const data = form.data.value;
+    const hora = form.hora.value;
     const motivo = form.motivo.value;
+    const datahora = `${data}T${hora}`;
 
-    const data = new Date(datahora);
-    const hora = data.getHours();
-    const diaSemana = data.getDay();
+    const dataObj = new Date(datahora);
+    const diaSemana = dataObj.getDay();
 
     const jaReservado = reservas.some(r => r.sala === sala && r.datahora === datahora);
 
@@ -42,8 +43,8 @@ document.getElementById('reservaForm').addEventListener('submit', function(e) {
         return;
     }
 
-    if (diaSemana === 0 || diaSemana === 6 || hora < 8 || hora > 15) {
-        document.getElementById('avisos').innerText = 'Horário fora do expediente (segunda a sexta, 8h às 16h).';
+    if (diaSemana === 0 || diaSemana === 6) {
+        document.getElementById('avisos').innerText = 'Horário fora do expediente (segunda a sexta).';
         return;
     }
 
