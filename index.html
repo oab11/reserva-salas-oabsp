@@ -13,7 +13,7 @@
         <p>Subseção Espírito Santo do Pinhal</p>
     </header>
     <main>
-        <form id="reservaForm">
+        <form action="reservar.php" method="POST">
             <label>Nome:</label>
             <input type="text" name="nome" required><br>
 
@@ -53,18 +53,7 @@
 
             <button type="submit">Reservar</button>
         </form>
-
-        <div id="avisos"></div>
-
-        <section>
-            <h2>Visualizar Reservas</h2>
-            <button onclick="filtrar('dia')">Dia</button>
-            <button onclick="filtrar('semana')">Semana</button>
-            <button onclick="filtrar('mes')">Mês</button>
-            <button onclick="filtrar('ano')">Ano</button>
-            <div id="reservas"></div>
-        </section>
+        <?php if (isset($_GET['msg'])) echo '<p style="color:red">' . htmlspecialchars($_GET['msg']) . '</p>'; ?>
     </main>
-    <script src="script.js"></script>
 </body>
 </html>
